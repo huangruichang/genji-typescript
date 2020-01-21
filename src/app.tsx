@@ -16,9 +16,7 @@ interface IProps {
     num: number;
   }>;
   saveOther: () => void;
-  user: {
-    [key: string]: any;
-  };
+  user: Indexable<{}>;
 }
 
 type IPropsPartial = Partial<IProps>;
@@ -30,7 +28,7 @@ const mapStateToProps = rootState => {
 const mapDispatchToProps = dispatch => {
   return {
     dispatch,
-    add: dispatch => {
+    add: () => {
       dispatch({
         type: numberModelTypes.add,
         payload: 1
@@ -46,17 +44,19 @@ const mapDispatchToProps = dispatch => {
       dispatch({
         type: numberModelTypes.saveAsync
       });
+    },
+    saveOther: () => {
+      dispatch({
+        type: userModelTypes.saveOther
+      });
     }
   };
 };
 
 export default connect(
-  mapStateToProps
-  // mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )((props: IPropsPartial) => {
-  props.dispatch({
-    type: numberModelTypes.add
-  });
   useEffect(() => {
     props.saveAsync();
   }, []);
